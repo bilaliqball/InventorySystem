@@ -1,0 +1,365 @@
+/* import fonts */
+@font-face {
+    font-family: "poppins";
+    font-style: normal;
+    font-weight: 300;
+    src: url("Poppins-Regular.ttf");
+}
+
+
+
+
+.anchorpane{
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #121a21;
+    -fx-background-color: rgba(255,255,255,1.0);
+}
+
+.borderpane{
+    -fx-background-color: #121a21;
+    -fx-background-radius: 1px;
+    -fx-border-radius: 1px;
+}
+
+.toppane1{
+    -fx-background-color: rgba(255,255,255,1.0);
+    -fx-border-radius: 15px 15px 0px 0px;
+    -fx-background-radius: 15px 15px 0px 0px;
+}
+
+.transparentpane{
+     -fx-background-color: transparent;
+}
+.centerpane{
+    -fx-background-color: rgba(255,255,255,0.2);
+     -fx-background-radius:  0px 0px 15px 15px;
+}
+.receivefilelabe{
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-underline: true;
+}
+
+.titlelabel{
+ -fx-text-fill: #ffffff; 
+ -fx-font-size: 18;
+-fx-font-family: poppins;
+-fx-font-weight: bold;
+}
+
+.messagelabel{
+ -fx-text-fill: #ffffff; 
+ -fx-font-size: 14;
+-fx-font-family: poppins;
+-fx-font-weight: bold;
+}
+
+.messagelabel2{
+ -fx-text-fill: #ffffff; 
+-fx-font-family: poppins;
+
+}
+
+.connectinglabel{
+ -fx-text-fill: #ffffff; 
+ -fx-font-size: 10px;
+-fx-font-family: poppins;
+
+}
+
+.notificationtextfield{
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-text-alignment:right;
+    -fx-background-color: transparent
+}
+.notificationlabe{
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-text-alignment:right;
+}
+.buttonn{
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-size:14px;
+    -fx-alignment: CENTER;
+}
+
+.buttonn:hover{
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+
+
+.tabbutton{
+ -fx-background-color: transparent;
+ -fx-text-fill: #ffffff; 
+-fx-font-family: poppins;
+
+}
+
+.tabbutton:hover{
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+
+.closebutton{
+    -fx-background-color: transparent;
+}
+
+.refreshpageButton{
+-fx-background-color: transparent;
+-fx-background-image: url("../imgs/refresh3x.png");
+-fx-background-size: 16px 16px;
+-fx-background-repeat: no-repeat;
+-fx-background-position: center;
+}
+
+.addServerButton{
+-fx-background-color: transparent;
+-fx-background-image: url("../imgs/hosting3x.png");
+-fx-background-size: 16px 16px;
+-fx-background-repeat: no-repeat;
+-fx-background-position: center;
+}
+
+
+.connectServerButton{
+-fx-background-color: transparent;
+-fx-background-image: url("../imgs/connect.png");
+-fx-background-size: 16px 16px;
+-fx-background-repeat: no-repeat;
+-fx-background-position: center;
+}
+
+
+.addServerOption{
+-fx-text-fill: #ffffff;
+-fx-font-family: poppins;
+-fx-font-size: 12;
+-fx-font-style: normal;
+-fx-border-radius: 5px;
+-fx-background-color: #121a21;
+}
+
+.loadingButton{
+    -fx-background-color: transparent;
+    -fx-background-image: url("img/loading.gif");
+    -fx-background-size: 100% 100%;
+    -fx-background-radius: 5em;
+}
+
+.progress-bar1{
+    -fx-accent:white;
+}
+.progress-bar1 .bar {
+/*    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, derive(white,95%), derive(white,10%)),
+        linear-gradient(to bottom, derive(white,38%), white);*/
+/*     -fx-accent:white;*/
+    -fx-background-insets: 4 4 8 4;
+    -fx-background-radius: 2;
+    -fx-padding: 0.75em;  
+
+}
+
+.progress-bar1:indeterminate .bar {
+/*    -fx-accent: white;*/
+}
+
+.progress-bar1 .track {
+/*     -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, derive(gray,-15%), derive(gray,2.2%) 20%, derive(gray,60%));*/
+    -fx-background-insets: 4 4 8 4;
+     -fx-padding: 0.75em;
+    -fx-background-color:rgba(0,0,0,0.3);
+/*    -fx-accent:white;*/
+}
+
+.progress-bar1:disabled {
+    -fx-opacity: 0;
+}
+
+/*
+ * Empty Stylesheet file.
+ */
+.button1{
+    -fx-background-color:transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.button2{
+    /*-fx-background-color: white;*/
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-text-fill: #034379;
+    -fx-alignment:CENTER;
+}
+
+.showProgressbarButton{
+    /*-fx-background-color: rgba(255,255,255,0.1);*/
+    -fx-background-radius:8px;
+    -fx-text-fill: white;
+    -fx-alignment:CENTER;
+}
+
+.button2:hover{
+    -fx-background-color: rgba(255,255,255,0.85);
+}
+
+.paneSetting{
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-background-radius: 0px 0px 5px 5px;
+    -fx-border-radius: 0px 0px 5px 5px;
+}
+.pane{
+    -fx-background-color: rgba(255,255,255,0.4);
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+.toppane1{
+     -fx-background-color: rgba(255,0,0,0.5);
+}
+.settingbutton{
+    -fx-background-color: rgba(255,255,255,0.4);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 5px 5px 0px 0px ;
+    -fx-border-radius: 5px 5px 0px 0px;
+}
+* {
+    -fx-my-menu-color:rgba(255,255,255,0.2);                  /* Change according to your needs */
+    -fx-my-menu-color-highlighted: rgba(255,255,255,0.3);      /* Change according to your needs */
+    -fx-my-menu-font-color: white;             /* Change according to your needs */
+    -fx-my-menu-font-color-highlighted: white; /* Change according to your needs */
+}
+
+/* MENU BAR + Top-level MENU BUTTONS */
+/*** The menu bar itself ***/    
+.menu-bar {
+    -fx-background-color: transparent;
+}
+
+/*** Top-level menu itself (not selected / hovered) ***/
+.menu-bar > .container > .menu-button {
+    -fx-border-radius: 5px 5px 0px 0px;
+     -fx-background-radius: 5px 5px 0px 0px;
+    -fx-background-color: transparent;
+}
+
+/*** Top-level menu's label (not selected / hovered) ***/
+.menu-bar > .container > .menu-button > .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+    -fx-font-size: 14px;
+}
+
+/*** Top-level menu's label (disabled) ***/
+.menu-bar > .container > .menu-button > .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** Top-level menu itself (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -fx-my-menu-color-highlighted;
+}
+
+/*** Top-level menu's label (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover > .label,
+.menu-bar > .container > .menu-button:focused > .label,
+.menu-bar > .container > .menu-button:showing > .label {
+    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* MENU ITEM (children of a MENU BUTTON) */
+/*** The item itself (not hovered / focused) ***/    
+.menu-item {
+    -fx-background-color: transparent; 
+    
+}
+
+/*** The item's label (not hovered / focused) ***/   
+.menu-item .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+}
+
+/*** The item's label (disabled) ***/   
+.menu-item .label:disabled {
+    -fx-opacity: 1.0;
+}    
+
+/*** The item itself (hovered / focused) ***/    
+.menu-item:focused, .menu-item:hovered {
+ -fx-background-color: -fx-my-menu-color-highlighted; 
+}
+
+/*** The item's label (hovered / focused) ***/  
+.menu-item:focused .label, .menu-item:hovered .label {
+-fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* CONTEXT MENU */
+/*** The context menu that contains a menu's menu items ***/  
+.context-menu {
+-fx-background-color: -fx-my-menu-color; 
+-fx-border-radius: 0px 0px 5px 5px;
+-fx-background-radius: 0px 0px 5px 5px;
+}
+.radio-button .radio{
+-fx-border-width: 1px;
+-fx-border-color: white;
+-fx-background-color: transparent;
+-fx-border-radius: 8px;
+}
+.radio-button .radio:selected {
+-fx-background-color: white;
+}
+.radio-button -radio:armed {
+-fx-background-color: white;
+}
+.radio-button -radio:determinate {
+-fx-background-color: white;
+}
+.radio-button -radio:indeterminate {
+-fx-background-color: white;
+}
+.radio-button .dot {
+-fx-padding: 2px;
+-fx-mark-highlight-color: #22da8d ;
+-fx-mark-color: #22da8d ;
+}
+
+.mainFxmlClass {
+
+}
+
+.menupane{
+background-color: transparent;
+}
+
+
+.check-box .box {
+-fx-background-color: white;
+-fx-Opacity: 0.5;
+-fx-border-radius:5px; 
+}
+
+.check-box:selected .mark {
+-fx-background-color: #22da8d;
+}
+
+.check-box:selected .box {
+-fx-background-color: white;
+}
+
+

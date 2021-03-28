@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="homeAnchorpane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #1d2731;" styleClass="mainFxmlClass" stylesheets="@../../../../resources/others/menu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.trango.app.appui.HomeController">
+   <children>
+      <BorderPane fx:id="homeBorderpane" prefHeight="600.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+             <ImageView fx:id="parentScreen" fitHeight="606.0" fitWidth="900.0" layoutX="0" layoutY="0" nodeOrientation="INHERIT" pickOnBounds="true" styleClass="anchor" BorderPane.alignment="CENTER">
+                <image>
+                    <Image url="@img/bg.png" />
+                </image>
+             </ImageView>
+         </children>
+         <top>
+            <Pane prefHeight="80.0" prefWidth="883.0" style="-fx-background-color: rgba(128,128,128,0.1);" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane focusTraversable="true" layoutY="7.0" prefHeight="66.0" prefWidth="363.0">
+                     <children>
+                        <ImageView disable="true" fitHeight="40.0" fitWidth="229.0" layoutX="12.0" layoutY="7.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" style="-fx-opacity: 1;">
+                           <image>
+                              <Image url="@../../../../resources/imgs/icon.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="slogenLabel" alignment="CENTER" layoutX="7.0" layoutY="42.0" prefHeight="19.0" prefWidth="158.0" style="-fx-text-fill: white;" text="File sharing at its best" textFill="#fcfcfc">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="163.0" layoutY="17.0" style="-fx-font-style: italic;" text="(Beta)" textFill="WHITE" />
+                     </children>
+                  </Pane>
+                  <MenuBar layoutX="736.0" layoutY="-2.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="80.0" prefWidth="173.0">
+                    <menus>
+                      <Menu fx:id="profilemenu" mnemonicParsing="false" onAction="#nullifiedcenter">
+                        <items>
+                              <MenuItem mnemonicParsing="false" onAction="#addCustomerInvoice" text="Create Customer Invoice">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../resources/icons/Add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#addDealerInvoice" text="Create Dealer Invoice">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../resources/icons/addServer.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#checkInvoice" text="Check All Invoice">
+                                 <graphic>
+                                    <StackPane prefHeight="30.0" prefWidth="30.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../resources/icons/Transferlog.png" />
+                                             </image></ImageView>
+                                          <Circle fx:id="contactrequestBadge" fill="#00ccff" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="8.0" translateY="-8.0" />
+                                          <Label fx:id="contactrequestLabel" style="-fx-text-fill: #00323F;" textFill="#00323f" translateX="8.0" translateY="-9.0" />
+                                       </children>
+                                    </StackPane>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#addInventoryStock" text="Add Inventory Stock">
+                                 <graphic>
+                                    <StackPane prefHeight="30.0" prefWidth="30.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../resources/icons/announcements.png" />
+                                             </image></ImageView>
+                                          <Circle fx:id="notificationBadge" fill="#00ccff" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="8.0" translateY="-8.0" />
+                                          <Label fx:id="notificationLabel" style="-fx-text-fill: #00323F;" textFill="#00323f" translateX="8.0" translateY="-9.0" />
+                                       </children>
+                                    </StackPane>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#checkInventoryStock" text="Check Available Inventory">
+                                 <graphic>
+                                    <StackPane prefHeight="30.0" prefWidth="30.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../resources/icons/Transferlog.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#checkSoldProducts" text="Check Sold Products">
+                                 <graphic>
+                                    <StackPane prefHeight="30.0" prefWidth="30.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../resources/icons/Help.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem fx:id="Settingitem" mnemonicParsing="false" onAction="#settings" text="  Settings">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../resources/icons/Settings.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" onAction="#logout" text="  Logout">
+                                 <graphic>
+                                    <StackPane prefHeight="30.0" prefWidth="30.0">
+                                       <children>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../resources/icons/Logout.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                 </graphic>
+                              </MenuItem>
+                        </items>
+                           <graphic>
+                              <Pane onMouseClicked="#hidePreviousResources" prefHeight="72.0" prefWidth="221.0" styleClass="menupane">
+                                 <children>
+                                    <ImageView fx:id="userprofilePicture" fitHeight="50.0" fitWidth="40.0" layoutX="87.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../resources/icons/roundlogo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <StackPane layoutX="107.0" layoutY="50.0" prefHeight="30.0" prefWidth="30.0" />
+                                    <Circle fx:id="profileBadge" fill="#00ccff" layoutX="121.0" layoutY="54.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                    <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" layoutX="-1.0" layoutY="16.0" prefHeight="28.0" prefWidth="85.0" style="-fx-text-fill: #1fcdff; -fx-font-size: 16;" text="..." textFill="#1fcdff" />
+                                    <Label fx:id="emailLabel" alignment="CENTER_RIGHT" layoutY="37.0" prefHeight="23.0" prefWidth="82.0" style="-fx-text-fill: #1fcdff; -fx-font-size: 10;" text="..." />
+                                    <Circle fill="WHITE" layoutX="134.0" layoutY="51.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                    <Circle fill="WHITE" layoutX="134.0" layoutY="33.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                    <Circle fill="WHITE" layoutX="134.0" layoutY="42.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                 </children>
+                              </Pane>
+                           </graphic>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children>
+            </Pane>
+         </top>
+         <right>
+            <AnchorPane fx:id="navList" onMouseExited="#Setting" prefHeight="348.0" prefWidth="165.0" style="-fx-background-color: transparent;" translateX="180" BorderPane.alignment="CENTER">
+               <children>
+                  <Button layoutX="1.0999999046325684" layoutY="0.09999990463256836" mnemonicParsing="false" prefHeight="35.0" prefWidth="165.0" styleClass="settingbutton" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/icons/Settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Pane layoutX="1.0" layoutY="35.0" prefHeight="208.0" prefWidth="165.0" styleClass="paneSetting">
+                     <children>
+                        <Button fx:id="changeDirectory" layoutY="36.0" mnemonicParsing="false" onAction="#changeDirectory" prefHeight="34.0" prefWidth="165.0" text="Change directory" />
+                        <Button fx:id="changePassword" layoutX="1.0999999046325684" layoutY="71.0999984741211" mnemonicParsing="false" onAction="#changePassword" prefHeight="34.0" prefWidth="165.0" text="Change password" />
+                        <Button fx:id="aboutUs" layoutY="1.0" mnemonicParsing="false" onAction="#about" prefHeight="34.0" prefWidth="165.0" text="About" />
+                        <Button fx:id="signedinDevices" layoutX="0.09999990463256836" layoutY="176.10000610351562" mnemonicParsing="false" onAction="#showSignedinDevices" prefHeight="34.0" prefWidth="165.0" text="My devices" />
+                        <Button fx:id="deactivateAccount" layoutX="1.0" layoutY="106.0" mnemonicParsing="false" onAction="#deactivate" prefHeight="34.0" prefWidth="165.0" text="Deactivate account" />
+                        <Button fx:id="checkUpdates" layoutY="141.0" mnemonicParsing="false" onAction="#checkforUpdates" prefHeight="34.0" prefWidth="165.0" text="Check for updates" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+         </right>
+      </BorderPane>
+   </children>
+</AnchorPane>

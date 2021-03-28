@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" fx:id="addInventoryAnchorpane" prefHeight="556.0" prefWidth="810.0" style="-fx-background-color: #1d2731;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.trango.app.appui.AddInventoryController">
+  <children>
+    <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="556.0" prefWidth="800.0">
+         <top>
+        <AnchorPane id="ap" prefHeight="551.0" prefWidth="808.0" BorderPane.alignment="CENTER">
+          <children>
+            <Label layoutX="15.0" layoutY="30.0" text="Invoice No:" textFill="WHITE">
+              <font>
+                <Font name="System Bold" size="14.0" fx:id="x2" />
+              </font>
+            </Label>
+            <Label fx:id="invoiceLabel" font="$x2" layoutX="88.0" layoutY="30.0" prefHeight="18.0" prefWidth="100.0" text="INV 123" textFill="WHITE" visible="true" />
+            <Label fx:id="dateLabel" font="$x2" layoutX="15.0" layoutY="2.0" text="22 Febraury 2021" textFill="WHITE" />
+            <Label fx:id="refrenceLabel" font="$x2" layoutX="88.0" layoutY="62.0" prefHeight="18.0" prefWidth="100.0" text="REF 1234" textFill="WHITE" visible="true" />
+            <Label font="$x2" layoutX="16.0" layoutY="63.0" text="Ref No:" textFill="WHITE" />
+            <Button fx:id="addProductButton" layoutX="756.0" layoutY="26.0" mnemonicParsing="false" onAction="#addProductAction" prefHeight="59.0" prefWidth="44.0" text="ADD" />
+            <TableView id="h" fx:id="inventoryTable" layoutX="14.0" layoutY="101.0" prefHeight="381.0" prefWidth="786.0">
+              <columns>
+                <TableColumn fx:id="idColumn" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="68.0" sortable="true" text="ID" />
+                <TableColumn fx:id="nameColumn" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="176.0" sortable="true" text="Name" />
+                <TableColumn fx:id="typeColumn" editable="false" maxWidth="5000.0" minWidth="10.0" sortable="true" text="Type" />
+                <TableColumn fx:id="categoryColumn" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="71.0" sortable="true" text="Category" />
+                <TableColumn fx:id="discountColumn" editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="75.0" sortable="true" text="Discount" />
+                <TableColumn fx:id="priceColumn" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="99.0" sortable="true" text="Price" />
+                <TableColumn fx:id="quantityColumn" editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" sortable="true" text="Quantity" />
+                <TableColumn fx:id="totalColumn" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="128.0" sortable="true" text="Total" />
+              </columns>
+            </TableView>
+                  <Button fx:id="printInvoiceButton" font="$x2" layoutX="599.0" layoutY="487.0" mnemonicParsing="false" onAction="#printInvoiceAction" prefHeight="28.0" prefWidth="202.0" text="Print Invoice" />
+                  <ChoiceBox fx:id="typeCombox" layoutX="645.0" layoutY="27.0" prefWidth="110.0" visible="true">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList" />
+                     </items>
+                  </ChoiceBox>
+                  <ChoiceBox fx:id="categoryCombox" layoutX="487.0" layoutY="27.0" prefWidth="110.0" visible="true">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList" />
+                     </items>
+                  </ChoiceBox>
+                  <Label font="$x2" layoutX="602.0" layoutY="32.0" text="Type:" textFill="WHITE" visible="true" />
+                  <Label font="$x2" layoutX="423.0" layoutY="32.0" text="Category:" textFill="WHITE" visible="true" />
+                  <TextField fx:id="productNameTextfield" layoutX="255.0" layoutY="27.0" promptText="Name of Battery" />
+                  <Label font="$x2" layoutX="194.0" layoutY="31.0" text="Name" textFill="WHITE" visible="true" />
+                  <TextField fx:id="unitPriceTextfield" layoutX="255.0" layoutY="58.0" promptText="Price of Battery" />
+                  <TextField fx:id="discountTextfield" layoutX="486.0" layoutY="58.0" prefHeight="27.0" prefWidth="112.0" promptText="Discount %" />
+                  <TextField fx:id="quantityTextfield" layoutX="645.0" layoutY="58.0" prefHeight="27.0" prefWidth="110.0" promptText="Unit of Battery" />
+                  <Label font="$x2" layoutX="197.0" layoutY="62.0" text="Price" textFill="WHITE" visible="true" />
+                  <Label font="$x2" layoutX="426.0" layoutY="62.0" text="Discount" textFill="WHITE" visible="true" />
+                  <Label font="$x2" layoutX="606.0" layoutY="62.0" text="Unit" textFill="WHITE" visible="true" />
+                  <Button fx:id="closeButton" layoutX="773.0" layoutY="1.0" mnemonicParsing="false" onAction="#close" prefHeight="19.0" prefWidth="25.0" text="x">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                  </Button>
+          </children>
+        </AnchorPane>
+         </top>
+    </BorderPane>
+  </children>
+</AnchorPane>
