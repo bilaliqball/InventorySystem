@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package com.trango.app.appui;
 
 import com.trango.app.database.InventoryDao;
@@ -26,103 +26,106 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
 /**
- * FXML Controller class
- *
- * @author bilaliqbal
- */
+* FXML Controller class
+*
+* @author bilaliqbal
+*/
 public class CheckAvailableInventoryController implements Initializable {
 
-    @FXML private Font x2;
-    @FXML private Button searchButton;
-    @FXML private TableView<ProductInfo> inventoryTable;
+@FXML private Font x2;
+@FXML private TableView<ProductInfo> inventoryTable;
+
+@FXML private TableColumn<ProductInfo, String> nameColumn;
+
+@FXML private TableColumn<ProductInfo, String> categoryColumn;
+@FXML private TableColumn<ProductInfo, String> unitPriceColumn;
+@FXML private TableColumn<ProductInfo, String> quantityColumn;
+@FXML private TableColumn<ProductInfo, String> totalColumn;
+
+ @FXML private TextField productDetails;
+@FXML private Button closeButton;
+@FXML private Label totalProducts;
+@FXML private Label totalAssets;
+@FXML private AnchorPane checkInventoryAnchorpane;
+
+public ObservableList<ProductInfo> itemdata;
+
+List<ProductInfo> completeAvailableProductlist;
+List<ProductInfo> searchedAvailableProductlist;
    
-    @FXML private TableColumn<ProductInfo, String> nameColumn;
-    @FXML private TableColumn<ProductInfo, String> typeColumn;
-    @FXML private TableColumn<ProductInfo, String> categoryColumn;
-    @FXML private TableColumn<ProductInfo, String> unitPriceColumn;
-    @FXML private TableColumn<ProductInfo, String> quantityColumn;
-    @FXML private TableColumn<ProductInfo, String> totalColumn;
-    @FXML private TextField productName;
-    @FXML private TextField productCategory;
-    @FXML private Button closeButton;
-    @FXML private Label totalProducts;
-    @FXML private Label totalAssets;
-    @FXML private AnchorPane checkInventoryAnchorpane;
-    
-    public ObservableList<ProductInfo> itemdata;
-    
-    List<ProductInfo> completeAvailableProductlist;
-    List<ProductInfo> searchedAvailableProductlist;
 
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    	
-    	itemdata = FXCollections.observableArrayList();
-    	try {
-			completeAvailableProductlist=new InventoryDao().getAvailableInventory();
-		} catch (Exception e1) {
-			
-			e1.printStackTrace();
-		}
-    	
+/**
+* Initializes the controller class.
+*/
+@Override
+public void initialize(URL url, ResourceBundle rb) {
+itemdata = FXCollections.observableArrayList();
+try {completeAvailableProductlist=new InventoryDao().getAvailableInventory();} catch (Exception e1) {e1.printStackTrace();}
+tableColumns();
+try {inventoryTable.setItems(getRemainingInventorydata());} catch (Exception e) {e.printStackTrace();}
 
-        tableColumns();
-        try {inventoryTable.setItems(getRemainingInventorydata());} catch (Exception e) {e.printStackTrace();}
-    }    
+init();
 
-    
-    
-    public void init() {
-    	productName.textProperty().addListener((observable, oldValue, newValue) -> {
-    	    if(newValue.length()>3) {
-    	    	try {
-    	    			searchedAvailableProductlist=new InventoryDao().getAvailableInventory(newValue);
-			        	itemdata.clear();
-			        	for(ProductInfo i:searchedAvailableProductlist){itemdata.add(i);}
-			        	inventoryTable.setItems(itemdata);
-    	    	} catch (Exception e) {
-				
-					e.printStackTrace();
-				}
-    	    }
-    	    
-    	    else {
-    	    	
-    	    	  try {inventoryTable.setItems(getRemainingInventorydata());} catch (Exception e) {e.printStackTrace();}
-    	    }
-    	    
-    	});
-    	
-    }
-    	public void tableColumns() {           
+
+}    
+
+
+
+public void init() {
+productDetails.textProperty().addListener((observable, oldValue, newValue) -> {
+if(newValue.length()>3) {
+    System.out.println(newValue);
+
+    try {
+searchedAvailableProductlist=new InventoryDao().getAvailableInventory(newValue);
+itemdata.clear();
+for(ProductInfo i:searchedAvailableProductlist){itemdata.add(i);}
+inventoryTable.setItems(itemdata);
+} catch (Exception e) {e.printStackTrace();}
+
+
+}
+
+else if (newValue.length()==0){
+
+try {inventoryTable.setItems(getRemainingInventorydata());} catch (Exception e) {e.printStackTrace();}
+}
+
+});
+
+}
+public void tableColumns() {           
 nameColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productName"));
-typeColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productType"));
 categoryColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productCategory"));
 unitPriceColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("unitPrice"));
 quantityColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("noOfUnits"));
 totalColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("totalPrice"));		
-	}
-    
-        
+}
+
+
 public ObservableList<ProductInfo> getRemainingInventorydata() throws ClassNotFoundException, SQLException, Exception{
 System.out.println("Items count: "+completeAvailableProductlist.size());
-for(ProductInfo i:completeAvailableProductlist){itemdata.add(i);}
+long assets=0;
+int count=0;
+for(ProductInfo i:completeAvailableProductlist){
+    itemdata.add(i);
+    count+=i.getNoOfUnits();
+    assets+=i.getTotalPrice();
+}
+
+totalProducts.setText(count+ "");
+totalAssets.setText(assets+ "");
 return itemdata;
 }  
-        
-    @FXML
-    private void searchAction(ActionEvent event) {
-    }
 
-    @FXML
-    private void close(ActionEvent event) {
-    System.out.println("close");
-    checkInventoryAnchorpane.getChildren();
-    checkInventoryAnchorpane.setVisible(false);
-    }
-    
+
+
+@FXML
+private void close(ActionEvent event) {
+System.out.println("close");
+checkInventoryAnchorpane.getChildren();
+checkInventoryAnchorpane.setVisible(false);
+}
+
 }

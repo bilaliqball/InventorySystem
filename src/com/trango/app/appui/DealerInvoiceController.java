@@ -117,7 +117,7 @@ public void fetchDataFromDB(){
 productmap=new HashMap<>();
 productlist=new ArrayList<>();
        try {
-           List<ProductInfo> list=new InventoryDao().getProductData();
+           List<ProductInfo> list=new InventoryDao().getProductDataList();
            for(ProductInfo i:list){
                System.out.println(i.getInventoryInfo());
                productmap.put(i.getProductName(),i.getNoOfUnits());

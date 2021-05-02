@@ -1,13 +1,9 @@
 package com.trango.app.util;
 
 import com.trango.app.database.InventoryDao;
-import com.trango.app.database.InvoiceDao;
-import com.trango.app.database.ProductDao;
-import com.trango.app.model.ProductInfo;
-import com.trango.app.model.SaleInfo;
+
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -16,49 +12,20 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import java.awt.AWTException;
-import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class Utils {
 
 
-public static void main(String argsp[]) throws Exception{
-	System.out.println("****************************AVAIALBLE*****************************");
-List<ProductInfo> avaiablelist=new InventoryDao().getAvailableInventory();
-for(ProductInfo i:avaiablelist){System.out.println(i.getInventoryInfo());}
 
-System.out.println("****************************SOLD*****************************");
-
-List<ProductInfo> list=new InventoryDao().getSoldInventory();
-for(ProductInfo i:list){System.out.println(i.getInventoryInfo());}
-
-System.out.println("****************************INVOICE*****************************");
-
-List<SaleInfo> salelist=new InvoiceDao().getInvoiceListProduct("AGSX");
-for(SaleInfo sale:salelist) {
-	System.out.println(sale.toString());
-}
-	
-	
-	
-	
-	
-	
-}
     
 public static String generatePassword() {
 final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -110,15 +77,12 @@ SimpleDateFormat formatter = new SimpleDateFormat("YYMMddHHss");
 Date date = new Date(System.currentTimeMillis());
 final String NUMERIC = "0123456789987654321";
 final SecureRandom RANDOM = new SecureRandom();
-
 sb.append("SAL");sb.append(formatter.format(date));
 for (int i = 0; i < 3; ++i) {sb.append(NUMERIC.charAt(RANDOM.nextInt(NUMERIC.length())));}
-    
-    
-  
-
 return sb.toString();
 }
+
+
 public static String generateRandomString() {
 final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 final SecureRandom RANDOM = new SecureRandom();
@@ -128,19 +92,28 @@ return sb.toString();}
 
 
 
-public static String getCurrentDateTime() 
-{
+public static String getCurrentDateTime() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date(System.currentTimeMillis());
     return formatter.format(date);
 }
 
-//public static String generateHotspotPassword() {
-//final String ALPHABET = "123456789qwertyupkjhgfdsazxcvbnm";
-//final SecureRandom RANDOM = new SecureRandom();
-//StringBuilder sb = new StringBuilder();
-//for (int i = 0; i < 8; ++i) {sb.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));}
-//return sb.toString();}
+
+public static String getTodatDate() {
+    SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy");
+    Date date = new Date(System.currentTimeMillis());
+    return formatter.format(date);
+}
+
+public static String getReadableDate(String date) throws ParseException {
+     SimpleDateFormat inputformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat outputformat = new SimpleDateFormat("E, dd MMM yyyy");
+    
+     String result = outputformat.format(inputformat.parse(date));
+    return result;
+}
+
+
 
 
 public static String generateHotspotPassword() {

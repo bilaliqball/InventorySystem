@@ -136,12 +136,7 @@ public class CustomerInvoiceController implements Initializable {
        });
 	   
 	   
-//	   productName.setOnKeyPressed(e -> {
-//		    if (e.getCode() == KeyCode.ENTER) { 
-//		   
-//
-//		    }
-//		});
+
 	   
          
                 
@@ -160,7 +155,7 @@ public void fetchDataFromDB(){
    
     
        try {
-           List<ProductInfo> list=new InventoryDao().getProductData();
+           List<ProductInfo> list=new InventoryDao().getProductDataList();
            for(ProductInfo i:list){
                System.out.println(i.getInventoryInfo());
                
@@ -243,7 +238,7 @@ public void fetchDataFromDB(){
 	}
 
     @FXML
-	public void addProduct(ActionEvent event) {
+	public void addProduct(ActionEvent event) throws Exception {
 		String valid = Validator.validateProduct(
                         productType.getSelectionModel().getSelectedItem(),
                         productBrand.getSelectionModel().getSelectedItem(),
@@ -364,13 +359,13 @@ public void fetchDataFromDB(){
 
 	}
     @FXML
-	public void saveBill(ActionEvent event) {	
+	public void saveBill(ActionEvent event) throws Exception {	
     	String valid = Validator.validateCustomer( customerName.getText(), customerContact.getText(), customerAddress.getText());
         InvoiceInfo bean=null;
         if(valid.equals("OK")) {
-        	bean = Validator.getBillingData(productTable, new TextField("INV1234"), customerName, customerContact, customerAddress,
+        	bean = Validator.getBillingData(productTable, new TextField(Utils.getInvoiceNumber()), customerName, customerContact, customerAddress,
 			subTotal, discountRate, totalDiscount, taxRate, totalTax, grossTotal);
-        	new InvoiceUtiils().saveBill(bean);
+        	new InvoiceUtiils().saveInvoice(bean);
         }else {
         	DialogAlerts.makeAlert( valid,"Empty");
 }

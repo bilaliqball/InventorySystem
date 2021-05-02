@@ -1,10 +1,6 @@
 
 package com.trango.app.database;
-import com.trango.app.model.BillingInfo;
-import com.trango.app.model.CustomerInfo;
-import com.trango.app.model.ProductInfo;
 import com.trango.app.model.SaleInfo;
-import com.trango.app.util.Utils;
 import static com.trango.application.DBLiterals.*;
 import com.trango.application.ResourceManager;
 
@@ -24,38 +20,23 @@ import java.util.List;
 
 public class InvoiceDao  {
 
- 
-    
-
-
-
-
-
-
 
 	public List<SaleInfo> getAllInvoiceList() throws ClassNotFoundException, SQLException, Exception{
-	     String productid;
-	     String serialnumber;
 	     String invoicenumber;
 	     String datetime;
-	    
-	     String customertype;
 	     String customerdetails;
 	     String productdetails;
-	    
-	     int productcount;
-	     double unitprice;
-	     int units;
 	     double subtotal;
-	    
 	     double discount;
 	     double grosstotal;
 	     double deposit;
 	     double balance;
+	     int productcount;
+	     int units;
 
 
-	String sql = "SELECT * FROM INVOICE";  
-	String row=""; String tab="\t";
+	     String sql = "SELECT * FROM INVOICE";  
+	
 
 
 
@@ -67,7 +48,7 @@ public class InvoiceDao  {
 	ResultSet resultset    = statement.executeQuery(sql);  
 	while (resultset.next()) {  
 	invoicenumber=resultset.getString(COLUMN_INVOICE_NUMBER);
-	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAIL);
+	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAILS);
 	productcount=resultset.getInt(COLUMN_PRODUCT_COUNT);
 	units=resultset.getInt(COLUMN_NUMBER_OF_UNITS);
 	subtotal=resultset.getDouble(COLUMN_TOTAL_PRICE);
@@ -81,7 +62,7 @@ public class InvoiceDao  {
 
 
 	}  
-	System.out.println(row);} 
+	} 
 	catch (SQLException e) {  System.out.println(e.getMessage());  }  
 	finally {statement.close();}
 
@@ -89,29 +70,22 @@ public class InvoiceDao  {
 	}
 
 
-	public List<SaleInfo> getInvoiceListCustomer(String keyword) throws ClassNotFoundException, SQLException, Exception{
-	     String productid;
-	     String serialnumber;
+	public List<SaleInfo> getInvoiceListCustomerDetails(String keyword) throws ClassNotFoundException, SQLException, Exception{
 	     String invoicenumber;
 	     String datetime;
-	    
-	     String customertype;
 	     String customerdetails;
 	     String productdetails;
-	    
-	     int productcount;
-	     double unitprice;
-	     int units;
 	     double subtotal;
-	    
 	     double discount;
 	     double grosstotal;
 	     double deposit;
 	     double balance;
+	     int productcount;
+	     int units;
 
 
-	String sql = "SELECT * FROM INVOICE where ( customerDetails like ?  or  customerType like ?)";  
-	String row=""; String tab="\t";
+	String sql = "SELECT * FROM INVOICE where ( customer_Details like ?  or  customer_type like ?)";  
+	
 
 
 
@@ -126,7 +100,7 @@ public class InvoiceDao  {
 	ResultSet resultset    = statement.executeQuery();  
 	while (resultset.next()) {  
 	invoicenumber=resultset.getString(COLUMN_INVOICE_NUMBER);
-	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAIL);
+	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAILS);
 	productcount=resultset.getInt(COLUMN_PRODUCT_COUNT);
 	units=resultset.getInt(COLUMN_NUMBER_OF_UNITS);
 	subtotal=resultset.getDouble(COLUMN_TOTAL_PRICE);
@@ -140,36 +114,29 @@ public class InvoiceDao  {
 
 
 	}  
-	System.out.println(row);} 
+	} 
 	catch (SQLException e) {  System.out.println(e.getMessage());  }  
 	finally {statement.close();}
 
 	return salelist;
 	}
 
-	public List<SaleInfo> getInvoiceListProduct(String keyword) throws ClassNotFoundException, SQLException, Exception{
-	     String productid;
-	     String serialnumber;
+	public List<SaleInfo> getInvoiceListProductDetails(String keyword) throws ClassNotFoundException, SQLException, Exception{
 	     String invoicenumber;
 	     String datetime;
-	    
-	     String customertype;
 	     String customerdetails;
 	     String productdetails;
-	    
-	     int productcount;
-	     double unitprice;
-	     int units;
 	     double subtotal;
-	    
 	     double discount;
 	     double grosstotal;
 	     double deposit;
 	     double balance;
+	     int productcount;
+	     int units;
 
 
-	String sql = "SELECT * FROM INVOICE where ( productList like ?)";  
-	String row=""; String tab="\t";
+	String sql = "SELECT * FROM INVOICE where ( product_list like ?)";  
+
 
 
 
@@ -182,7 +149,7 @@ public class InvoiceDao  {
 	ResultSet resultset    = statement.executeQuery();  
 	while (resultset.next()) {  
 	invoicenumber=resultset.getString(COLUMN_INVOICE_NUMBER);
-	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAIL);
+	customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAILS);
 	productcount=resultset.getInt(COLUMN_PRODUCT_COUNT);
 	units=resultset.getInt(COLUMN_NUMBER_OF_UNITS);
 	subtotal=resultset.getDouble(COLUMN_TOTAL_PRICE);
@@ -196,7 +163,7 @@ public class InvoiceDao  {
 
 
 	}  
-	System.out.println(row);} 
+	} 
 	catch (SQLException e) {  System.out.println(e.getMessage());  }  
 	finally {statement.close();}
 
@@ -204,26 +171,17 @@ public class InvoiceDao  {
 	}
 
 
-public List<SaleInfo> getCustomerSaleList() throws ClassNotFoundException, SQLException, Exception{
-     String productid;
-     String serialnumber;
+	public List<SaleInfo> getCustomerSaleList() throws ClassNotFoundException, SQLException, Exception{
      String invoicenumber;
      String datetime;
-    
-     String customertype;
      String customerdetails;
      String productdetails;
-    
-
      double unitprice;
      int units;
      double subtotal;
-    
- 
 
+     String sql = "SELECT * FROM INVOICE";  
 
-String sql = "SELECT * FROM INVOICE";  
-String row=""; String tab="\t";
 
 
 
@@ -236,7 +194,7 @@ statement  = ResourceManager.getConnection().createStatement();
 ResultSet resultset    = statement.executeQuery(sql);  
 while (resultset.next()) {  
 invoicenumber=resultset.getString(COLUMN_INVOICE_NUMBER);
-customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAIL);
+customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAILS);
 productdetails=resultset.getString(COLUMN_PRODUCT_LIST);
 
 units=resultset.getInt(COLUMN_NUMBER_OF_UNITS);
@@ -250,7 +208,7 @@ salelist.add(new SaleInfo(invoicenumber,  datetime, customerdetails,  productdet
 
 
 }  
-System.out.println(row);} 
+} 
 catch (SQLException e) {  System.out.println(e.getMessage());  }  
 finally {statement.close();}
 
@@ -258,20 +216,13 @@ return salelist;
 }
 
 
-
-
-public List<SaleInfo> getDealerSaleList() throws ClassNotFoundException, SQLException, Exception{
-     String productid;
-     String serialnumber;
+	public List<SaleInfo> getDealerSaleList() throws ClassNotFoundException, SQLException, Exception{
      String invoicenumber;
      String datetime;
-    
-     String customertype;
      String customerdetails;
      String productdetails;
-    
      int productcount;
-     double unitprice;
+
      int units;
      double subtotal;
     
@@ -282,20 +233,9 @@ public List<SaleInfo> getDealerSaleList() throws ClassNotFoundException, SQLExce
 
 
 String sql = "SELECT * FROM INVOICE";  
-String row=""; String tab="\t";
 
-String title=
-"InvoiceNo."+tab+
-"CustomerDetails"+tab+
-"Product Count"+tab+
-"No of Units"+tab+
-"SubTotal"+tab+
-"DiscountPrice"+tab+
-"GrossTotal"+tab+
-"Deposit"+tab+
-"Balance"+tab+
-"datetime"+tab+
-"Product\n";
+
+
 
 
 List<SaleInfo> salelist=new ArrayList<>();
@@ -306,7 +246,7 @@ statement  = ResourceManager.getConnection().createStatement();
 ResultSet resultset    = statement.executeQuery(sql);  
 while (resultset.next()) {  
 invoicenumber=resultset.getString(COLUMN_INVOICE_NUMBER);
-customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAIL);
+customerdetails=resultset.getString(COLUMN_CUSTOMER_DETAILS);
 productcount=resultset.getInt(COLUMN_PRODUCT_COUNT);
 units=resultset.getInt(COLUMN_NUMBER_OF_UNITS);
 subtotal=resultset.getDouble(COLUMN_TOTAL_PRICE);
@@ -322,7 +262,7 @@ salelist.add(new SaleInfo(invoicenumber,  datetime, customerdetails, productdeta
 System.out.println(productdetails);
 
 }  
-System.out.println(row);} 
+} 
 catch (SQLException e) {  System.out.println(e.getMessage());  }  
 finally {statement.close();}
 

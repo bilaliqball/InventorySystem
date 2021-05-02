@@ -1,7 +1,7 @@
 package com.trango.app.model;
 
 import com.trango.app.util.Utils;
-import static com.trango.application.DBLiterals.CUSTOMER_TYPE_DEALER;
+
 import java.util.List;
 
 
@@ -67,7 +67,7 @@ public class InvoiceInfo {
         customer=new CustomerInfo();
         customer.setCustomerId(customercontact);
         customer.setCustomerName(customername);
-        customer.setCustomerType(CUSTOMER_TYPE_DEALER);
+        customer.setCustomerType("");
         customer.setCustomerContact(customercontact);
         customer.setCustomerAddress(customeraddress);
         customer.setCustomerDetail(customername+ " "+customercontact);
@@ -80,6 +80,25 @@ public class InvoiceInfo {
 	public void setProducts(List<ProductInfo> products) {this.products = products;}
 	
         
+	
+	public String title() {
+		String tab=" ";
+		String title=
+				"InvoiceNo."+tab+
+				"CustomerDetails"+tab+
+				"Product Count"+tab+
+				"No of Units"+tab+
+				"SubTotal"+tab+
+				"DiscountPrice"+tab+
+				"GrossTotal"+tab+
+				"Deposit"+tab+
+				"Balance"+tab+
+				"datetime"+tab+
+				"Product\n";
+		return title;
+		
+	}
+	
         @Override
 	public String toString() {
             String tab="\t";

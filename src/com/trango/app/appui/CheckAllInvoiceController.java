@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
@@ -30,11 +31,10 @@ import javafx.scene.text.Font;
  *
  * @author bilaliqbal
  */
-public class CheckDealerInvoiceController implements Initializable {
+public class CheckAllInvoiceController implements Initializable {
 
     @FXML private AnchorPane checkInvoiceAnchorpane;
     @FXML private Font x2;
-    @FXML private Button searchButton;
     @FXML private TableView<SaleInfo> invoiceTable;
     
     @FXML private Label productSold;
@@ -42,11 +42,10 @@ public class CheckDealerInvoiceController implements Initializable {
     @FXML private Button closeButton;
    
     
-    @FXML private TableColumn<SaleInfo, String> invoceId;
+ 
     @FXML private TableColumn<SaleInfo, String> datetime;
     @FXML private TableColumn<SaleInfo, String> dealerDetails;
     @FXML private TableColumn<SaleInfo, String> productDetails;
-    @FXML private TableColumn<SaleInfo, Integer> productQuantity;
     @FXML private TableColumn<SaleInfo, Integer> numberOfUnits;
     @FXML private TableColumn<SaleInfo, Double> deposit;
     @FXML private TableColumn<SaleInfo, Double> balance;
@@ -68,7 +67,7 @@ public class CheckDealerInvoiceController implements Initializable {
     	
     	try {
     	itemdata = FXCollections.observableArrayList();
-		allInvoicelist=new InvoiceDao().getAllInvoiceList();} catch (Exception e1) {e1.printStackTrace();} 
+	allInvoicelist=new InvoiceDao().getAllInvoiceList();} catch (Exception e1) {e1.printStackTrace();} 
         tableColumns();init();
         
         try {invoiceTable.setItems(getInvoiceData());} catch (Exception e) {e.printStackTrace();}
@@ -81,14 +80,14 @@ public class CheckDealerInvoiceController implements Initializable {
     	productDetail.textProperty().addListener((observable, oldValue, newValue) -> {
     	    if(newValue.length()>3) {
     	    	try {
-    	    			invoicelist=new InvoiceDao().getInvoiceListProduct(newValue);
+    	    			invoicelist=new InvoiceDao().getInvoiceListProductDetails(newValue);
 			        	itemdata.clear();
 			        	for(SaleInfo i:invoicelist){itemdata.add(i);}
 			        	invoiceTable.setItems(itemdata);
     	    	} catch (Exception e) {e.printStackTrace();}
     	    }
     	    
-    	    else {
+    	    else if (newValue.length()==0){
     	    	  try {invoiceTable.setItems(getInvoiceData());} catch (Exception e) {e.printStackTrace();}
     	    }
     	    
@@ -97,14 +96,14 @@ public class CheckDealerInvoiceController implements Initializable {
     	deallerDetail.textProperty().addListener((observable, oldValue, newValue) -> {
     	    if(newValue.length()>3) {
     	    	try {
-    	    			invoicelist=new InvoiceDao().getInvoiceListCustomer(newValue);
+    	    			invoicelist=new InvoiceDao().getInvoiceListCustomerDetails(newValue);
 			        	itemdata.clear();
 			        	for(SaleInfo i:invoicelist){itemdata.add(i);}
 			        	invoiceTable.setItems(itemdata);
     	    	} catch (Exception e) {e.printStackTrace();}
     	    }
     	    
-    	    else {
+    	    else if(newValue.length()==0) {
     	    	  try {invoiceTable.setItems(getInvoiceData());} catch (Exception e) {e.printStackTrace();}
     	    }
     	    
@@ -113,31 +112,58 @@ public class CheckDealerInvoiceController implements Initializable {
     }
     
     
+
     
     @FXML
-    private void searchAction(ActionEvent event) {
+public void clickItem(MouseEvent event){
+    if (event.getClickCount() == 2) {
+        String invoiceNumber=invoiceTable.getSelectionModel().getSelectedItem().getInvoiceNumber();
+        String productdetails=invoiceTable.getSelectionModel().getSelectedItem().getProductDetails();
+        String customerdetails=invoiceTable.getSelectionModel().getSelectedItem().getCustomerDetails();
+        System.out.println(invoiceNumber + "\n"+ customerdetails+ "\n"+ productdetails);
+        
+        String[] arr=productdetails.split(",");
+        StringBuilder list=new StringBuilder();
+        if(arr.length>1){
+        for(int i=0;i<arr.length;i++){
+            list.append(arr[i].trim());
+            list.append("\n");
+
+        }
+                DialogAlerts.makeAlert(invoiceNumber + "\n"+ customerdetails+ "\n"+ list.toString(), "");
+        }
+        
+        else{
+        
+        DialogAlerts.makeAlert(invoiceNumber + "\n"+ customerdetails+ "\n"+ productdetails, "");
+        }
     }
-    
-    
+}
     
     
 public ObservableList<SaleInfo> getInvoiceData() throws ClassNotFoundException, SQLException, Exception{
 System.out.println("Items count: "+allInvoicelist.size());
-for(SaleInfo i:allInvoicelist){itemdata.add(i);}
+long assets=0;
+int count=0;
+for(SaleInfo i:allInvoicelist){itemdata.add(i);
+ count+=i.getNoOfUnits();
+    assets+=i.getTotalPrice();
+}
+
+productSold.setText(count+"");
+totalSale.setText(assets+"");
 return itemdata;
 } 
 
     
     public void tableColumns(){         
-   invoceId.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("invoiceNumber"));
-   datetime.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("datetime"));
-   dealerDetails.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("customerDetails"));
-   productDetails.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("productDetails"));
-   productQuantity.setCellValueFactory(new PropertyValueFactory<SaleInfo, Integer>("productCount"));
-   numberOfUnits.setCellValueFactory(new PropertyValueFactory<SaleInfo, Integer>("noOfUnits"));
-   deposit.setCellValueFactory(new PropertyValueFactory<SaleInfo, Double>("deposit"));
-   balance.setCellValueFactory(new PropertyValueFactory<SaleInfo, Double>("balance"));
-   grossTotal.setCellValueFactory(new PropertyValueFactory<SaleInfo, Double>("grossTotal"));
+   datetime.setCellValueFactory(new PropertyValueFactory<>("datetime"));
+   dealerDetails.setCellValueFactory(new PropertyValueFactory<>("customerDetails"));
+   productDetails.setCellValueFactory(new PropertyValueFactory<>("productDetails"));
+   numberOfUnits.setCellValueFactory(new PropertyValueFactory<>("noOfUnits"));
+   deposit.setCellValueFactory(new PropertyValueFactory<>("deposit"));
+   balance.setCellValueFactory(new PropertyValueFactory<>("balance"));
+   grossTotal.setCellValueFactory(new PropertyValueFactory<>("grossTotal"));
     }
 
     @FXML

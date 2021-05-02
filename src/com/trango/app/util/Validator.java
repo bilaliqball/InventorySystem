@@ -3,7 +3,6 @@ package com.trango.app.util;
 
 import com.trango.app.model.InvoiceInfo;
 import com.trango.app.model.ProductInfo;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -17,10 +16,14 @@ public class Validator {
         
         
 	public static ProductInfo getProductData(ComboBox<String> productType,ComboBox<String> productName,ComboBox<String> productBrand,TextField productSerial,
-		TextField productPrice,TextField productQuantity,TextField ptotalPrice) {
-		ProductInfo bean =new ProductInfo();
+		TextField productPrice,TextField productQuantity,TextField ptotalPrice) throws Exception {
+		ProductInfo bean =new ProductInfo(productName.getEditor().getText());
+		
+		//ProductInfo bean=new ProductInfo("000","MOB1000", "Mobile", "Samsung", 0,12309, 4, 24600);
+		
+		bean.setProductName(productName.getEditor().getText());
 		bean.setProductType(productType.getSelectionModel().getSelectedItem());;
-		bean.setProductDescription(productType.getEditor().getText()+" "+productName.getEditor().getText());
+		bean.setProductDetails(productType.getEditor().getText()+" "+productName.getEditor().getText());
 		bean.setSerialNumber(productSerial.getText().toUpperCase());
 		bean.setUnitPrice(Double.parseDouble(productPrice.getText()));
 		bean.setNoOfUnits(Integer.parseInt(productQuantity.getText()));

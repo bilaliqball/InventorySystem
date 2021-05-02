@@ -35,7 +35,7 @@ public class InvoiceGenerator {
 		String date = format.format(curDate);
 		try {
 
-                    System.out.println("Out>> "+fileName );
+            System.out.println("Out>> "+fileName );
 			OutputStream file = new FileOutputStream(fileName);
 			Document document = new Document();
 			PdfWriter.getInstance(document, file);
@@ -90,9 +90,9 @@ public class InvoiceGenerator {
 				billTable.addCell(getBillRowCell((i+1)+""));
 				billTable.addCell(getBillRowCell(products.get(i).getProductType()));
 				if(products.get(i).getProductType().equals("Battery")) {
-					desc=products.get(i).getProductDescription()+"\n IMI: "+products.get(i).getSerialNumber();
+					desc=products.get(i).getProductDetails()+"\n IMI: "+products.get(i).getSerialNumber();
 				}else {
-					desc=products.get(i).getProductDescription()+"\n Serial: "+products.get(i).getSerialNumber();
+					desc=products.get(i).getProductDetails()+"\n Serial: "+products.get(i).getSerialNumber();
 				}
 
 				billTable.addCell(getBillRowCell(desc));
@@ -143,6 +143,144 @@ public class InvoiceGenerator {
 			document.open();//PDF document opened........	
 
 			document.add(image);
+			document.add(irhTable);
+			document.add(bill);
+			document.add(name);
+			document.add(contact);
+			document.add(address);			
+			document.add(billTable);
+			document.add(describer);
+
+			document.close();
+
+			file.close();
+
+			return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+
+	}
+
+	
+	public static boolean savePDF(File fileName, InvoiceInfo data) {
+		List<ProductInfo> products = data.getProducts(); 
+		String desc = null;
+
+		Date curDate = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
+		String date = format.format(curDate);
+		try {
+
+            System.out.println("Out>> "+fileName );
+			OutputStream file = new FileOutputStream(fileName);
+			Document document = new Document();
+			PdfWriter.getInstance(document, file);
+
+			//Inserting Image in PDF
+                        
+                        	
+		
+
+			PdfPTable irdTable = new PdfPTable(2);
+			irdTable.addCell(getIRDCell("Invoice No"));
+			irdTable.addCell(getIRDCell("Invoice Date"));
+			irdTable.addCell(getIRDCell(data.getInvoiceNumber())); // pass invoice number
+			irdTable.addCell(getIRDCell(date)); // pass invoice date				
+
+			PdfPTable irhTable = new PdfPTable(3);
+			irhTable.setWidthPercentage(100);
+
+			irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
+			irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
+			irhTable.addCell(getIRHCell("Invoice", PdfPCell.ALIGN_RIGHT));
+			irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
+			irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
+			PdfPCell invoiceTable = new PdfPCell (irdTable);
+			invoiceTable.setBorder(0);
+			irhTable.addCell(invoiceTable);
+
+			FontSelector fs = new FontSelector();
+			Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
+			fs.addFont(font);
+			Phrase bill = fs.process("Bill To"); // customer information
+			Paragraph name = new Paragraph("Mr. "+data.getCustomer().getCustomerName());
+			name.setIndentationLeft(20);
+			Paragraph contact = new Paragraph(data.getCustomer().getCustomerContact());
+			contact.setIndentationLeft(20);
+			Paragraph address = new Paragraph(data.getCustomer().getCustomerAddress());
+			address.setIndentationLeft(20);
+
+			PdfPTable billTable = new PdfPTable(6);
+			billTable.setWidthPercentage(100);
+			billTable.setWidths(new float[] { 1, 2,5,2,1,2 });
+			billTable.setSpacingBefore(30.0f);
+			billTable.addCell(getBillHeaderCell("Index"));
+			billTable.addCell(getBillHeaderCell("Item"));
+			billTable.addCell(getBillHeaderCell("Description"));
+			billTable.addCell(getBillHeaderCell("Unit Price"));
+			billTable.addCell(getBillHeaderCell("Qty"));
+			billTable.addCell(getBillHeaderCell("Amount"));
+
+			for(int i =0; i< products.size();i++) {
+				billTable.addCell(getBillRowCell((i+1)+""));
+				billTable.addCell(getBillRowCell(products.get(i).getProductType()));
+				if(products.get(i).getProductType().equals("Battery")) {
+					desc=products.get(i).getProductDetails()+"\n IMI: "+products.get(i).getSerialNumber();
+				}else {
+					desc=products.get(i).getProductDetails()+"\n Serial: "+products.get(i).getSerialNumber();
+				}
+
+				billTable.addCell(getBillRowCell(desc));
+				billTable.addCell(getBillRowCell(products.get(i).getUnitPrice()+""));
+				billTable.addCell(getBillRowCell(products.get(i).getNoOfUnits()+""));
+				billTable.addCell(getBillRowCell(products.get(i).getTotalPrice()+""));
+			}
+			for(int j =0;j< 15-products.size();j++) {
+				billTable.addCell(getBillRowCell(" "));
+				billTable.addCell(getBillRowCell(""));
+				billTable.addCell(getBillRowCell(""));
+				billTable.addCell(getBillRowCell(""));
+				billTable.addCell(getBillRowCell(""));
+				billTable.addCell(getBillRowCell(""));
+			}
+
+			PdfPTable validity = new PdfPTable(1);
+			validity.setWidthPercentage(100);
+			validity.addCell(getValidityCell(" "));
+			validity.addCell(getValidityCell(" "));
+			validity.addCell(getValidityCell(" "));
+			validity.addCell(getValidityCell(" "));		    
+			PdfPCell summaryL = new PdfPCell (validity);
+			summaryL.setColspan (3);
+			summaryL.setPadding (1.0f);	                   
+			billTable.addCell(summaryL);
+
+			PdfPTable accounts = new PdfPTable(2);
+			accounts.setWidthPercentage(100);
+			accounts.addCell(getAccountsCell("Subtotal"));
+			accounts.addCell(getAccountsCellR(data.getBill().getSubTotalPrice()));
+			accounts.addCell(getAccountsCell("Discount ("+data.getBill().getDiscountRate()+"%)"));
+			accounts.addCell(getAccountsCellR(data.getBill().getDiscountPrice()));
+			accounts.addCell(getAccountsCell("Tax ("+data.getBill().getTaxRate()+"%)"));
+			accounts.addCell(getAccountsCellR(data.getBill().getTaxPrice()));
+			accounts.addCell(getAccountsCell("Total"));
+			accounts.addCell(getAccountsCellR(data.getBill().getTotalPrice()));			
+			PdfPCell summaryR = new PdfPCell (accounts);
+			summaryR.setColspan (3);         
+			billTable.addCell(summaryR);  
+
+			PdfPTable describer = new PdfPTable(1);
+			describer.setWidthPercentage(100);
+			describer.addCell(getdescCell(" "));
+			describer.addCell(getdescCell("03014442033"));	
+
+			document.open();//PDF document opened........	
+
+		
 			document.add(irhTable);
 			document.add(bill);
 			document.add(name);

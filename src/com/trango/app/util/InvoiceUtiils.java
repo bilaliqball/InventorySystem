@@ -3,6 +3,7 @@ package com.trango.app.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -15,11 +16,11 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Sides;
 
 import com.trango.app.appui.DialogAlerts;
+import com.trango.app.database.ProductDao;
+import com.trango.app.model.CustomerInfo;
 import com.trango.app.model.InvoiceInfo;
+import com.trango.app.model.ProductInfo;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 public class InvoiceUtiils {
@@ -28,13 +29,15 @@ public class InvoiceUtiils {
     
 	public void saveBill(InvoiceInfo bean) {		
 		File file =new File(getClass().getResource("/resources/others/INVOICE.pdf").getFile());
-                
-                //file =new File("/Users/bilaliqbal/NetBeansProjects/FXApplication/src/resources/others/INVOICE.pdf");
-		
-                System.out.println("File>"+file.getName());
-                
-                boolean isGenrated =false;
+        System.out.println("File>"+file.getName());        
+        boolean isGenrated =false;
+        
+        boolean updated=false;
+       
+        try{updated=new ProductDao().removeProductFromInventory(bean.getCustomer(),bean.getProducts());}catch(Exception e) {e.printStackTrace();}
 
+        System.out.println("Updated: "+ updated);
+        
 
 		if(! (bean == null)) {
 			try{isGenrated =InvoiceGenerator.makePDF(file, bean);}catch(Exception e){e.printStackTrace();}
@@ -57,6 +60,40 @@ public class InvoiceUtiils {
 			}
 		}else {
 			DialogAlerts.makeAlert("File Not Found", "Falied Saving File");
+		}
+
+
+	}
+	
+	
+	
+	public void saveInvoice(InvoiceInfo bean) {		
+		File file =new File(getClass().getResource("/resources/others/INVOICE.pdf").getFile());
+        System.out.println("File>"+file.getName());        
+        boolean isGenrated =false;
+        
+        boolean updated=false;
+       
+        try{updated=new ProductDao().removeProductFromInventory(bean.getCustomer(),bean.getProducts());}catch(Exception e) {e.printStackTrace();}
+
+        System.out.println("Updated: "+ updated);
+        
+
+		if(! (bean == null)) {
+			try{isGenrated =InvoiceGenerator.savePDF(file, bean);}catch(Exception e){e.printStackTrace();}
+		}
+
+		if(isGenrated) {
+			
+			String outputfilename="Invoice_No_"+bean.getCustomer().getCustomerDetail()+".pdf";
+
+				try {
+					Files.copy(file.toPath(), new File("C:\\Users\\bee\\Downloads\\"+outputfilename).toPath());
+				} catch (Exception ex) {
+					DialogAlerts.makeAlert("File Not Found", "Falied Saving File");
+                                        ex.printStackTrace();
+				}
+			
 		}
 
 

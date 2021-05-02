@@ -4,15 +4,11 @@ import com.trango.app.model.CustomerInfo;
 import com.trango.app.model.ItemInfo;
 import com.trango.app.model.ProductInfo;
 import com.trango.app.util.Utils;
-import static com.trango.app.util.Utils.getInvoiceNumber;
 import static com.trango.application.DBLiterals.*;
 import com.trango.application.ResourceManager;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,69 +21,12 @@ import java.util.List;
 
 public class ProductDao  {
 
- 
-    
-
-public static String FULLNAME="ABC";
-public static String EMAIL="";
-
-
-public static void main(String args[]) throws SQLException, Exception{
-
- List<ProductInfo> productlist=new ArrayList<>();
-
-CustomerInfo customer=new CustomerInfo("1234","Bilal Iqbal", "Dealer", "0300", "Lahore");
-
-
-
-ProductInfo product1=new ProductInfo("000","AGS1000", "Battery", "AGS", 0,12309, 4, 24600);
-ProductInfo product2=new ProductInfo("000","AGS2000", "Battery", "AGS", 0,12309, 4, 24600);
-ProductInfo product3=new ProductInfo("000","AGS3000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product4=new ProductInfo("000","AGS4000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product5=new ProductInfo("000","AGS5000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product6=new ProductInfo("000","AGS6000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product7=new ProductInfo("000","AGS7000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product8=new ProductInfo("000","AGS8000", "Battery", "AGS", 0,12300, 4, 24600);
-ProductInfo product9=new ProductInfo("000","AGS9000", "Battery", "AGS", 0,12300, 4, 24600);
-productlist.add(product1);
-productlist.add(product2);   
-productlist.add(product3);
-productlist.add(product4);   
-productlist.add(product5);
-productlist.add(product6);   
-productlist.add(product7);
-productlist.add(product8);   
-productlist.add(product9);
-
-
-//new ProductDao().addProductIntoInventory(product2);
-//new ProductDao().removeProductFromInventory(customer,product2);
-
-//new ProductDao().addProductIntoInventory(productlist);
-new ProductDao().removeProductFromInventory(customer,productlist);
-
-
-  
-    
-//new ProductDao().getAvailableInventory();
-   // new ProductDao().getSoldInventory();
-
-//System.out.println( new ProductDao().getProductId("AGS600"));
-
-//System.out.println(new DBUtilsDao().getProductCount("AGS600h"));
-//System.out.println(new DBUtilsDao().getProductName("ags 60"));
-
-}
-
-
-
-
 
 
 public boolean addProductIntoInventory(ProductInfo product) throws SQLException, ClassNotFoundException, Exception {
 PreparedStatement statement=null;
 String sql = 
-"INSERT INTO INVENTORY ("+
+"INSERT INTO inventory ("+
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
@@ -99,8 +38,9 @@ COLUMN_NUMBER_OF_UNITS + SEPARATOR_COMMA+
 COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+ 
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
 "VALUES(?,?,?,?,?,?,?,?,?,?)"
-         + " ON DUPLICATE KEY UPDATE "
-        + "noOfUnits=noOfUnits+?, "
+        // + " ON DUPLICATE KEY UPDATE "
+         +"ON CONFLICT(product_id) DO UPDATE SET "
+        + "no_of_units=no_of_units+?, "
         + "datetime=?";  
  
 statement = ResourceManager.getConnection().prepareStatement(sql);  
@@ -108,7 +48,7 @@ statement.setString(1, product.getProductId());
 statement.setString(2, product.getProductName());
 statement.setString(3, product.getProductType());
 statement.setString(4, product.getProductCategory());
-statement.setString(5, product.getProductDescription());
+statement.setString(5, product.getProductDetails());
 statement.setString(6, product.getSerialNumber());
 statement.setDouble(7, product.getUnitPrice());
 statement.setInt(8, product.getNoOfUnits());
@@ -120,8 +60,6 @@ statement.executeUpdate();System.out.println("Product added + ");
 statement.close();
 return false;}
 
-
-
 public boolean removeProductFromInventory(CustomerInfo customer, ProductInfo product) throws SQLException, ClassNotFoundException, Exception {
 PreparedStatement statement=null;
 String invoiceNumber=Utils.getInvoiceNumber();
@@ -129,7 +67,7 @@ String customerId=customer.getCustmerId();
 String productList="";
 
 String addIntoSaleQuery = 
-"INSERT INTO SALE ("+
+"INSERT INTO sale ("+
 COLUMN_INVOICE_NUMBER + SEPARATOR_COMMA+ 
 COLUMN_SALE_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
@@ -137,12 +75,13 @@ COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_CATEGORY + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_DETAILS +  SEPARATOR_COMMA+ 
+COLUMN_CUSTOMER_DETAILS +  SEPARATOR_COMMA+ 
 COLUMN_SERIAL_NUMBER +SEPARATOR_COMMA+         
 COLUMN_UNIT_PRICE + SEPARATOR_COMMA+ 
 COLUMN_NUMBER_OF_UNITS + SEPARATOR_COMMA+ 
 COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+ 
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
-"VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";  
+"VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";  
  
 statement = ResourceManager.getConnection().prepareStatement(addIntoSaleQuery);  
 statement.setString(1,invoiceNumber );
@@ -151,17 +90,23 @@ statement.setString(3, product.getProductId());
 statement.setString(4, product.getProductName());
 statement.setString(5, product.getProductType());
 statement.setString(6, product.getProductCategory());
-statement.setString(7, product.getProductDescription());
-statement.setString(8, product.getSerialNumber());
-statement.setDouble(9, product.getUnitPrice());
-statement.setInt(10, product.getNoOfUnits());
-statement.setDouble(11, product.getTotalPrice());
-statement.setString(12, Utils.getCurrentDateTime());
-statement.executeUpdate();System.out.println("Product Sold -");
+statement.setString(7, product.getProductDetails());
+statement.setString(8, "Customer Details");
+statement.setString(9, product.getSerialNumber());
+statement.setDouble(10, product.getUnitPrice());
+statement.setInt(11, product.getNoOfUnits());
+statement.setDouble(12, product.getTotalPrice());
+statement.setString(13, Utils.getCurrentDateTime());
+int sold=statement.executeUpdate();
+
+if(sold==1){
+
+System.out.println("Product Sold -");
+}
 
 
 String sql = 
-"INSERT INTO INVENTORY ("+
+"INSERT INTO inventory ("+
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
@@ -173,8 +118,9 @@ COLUMN_NUMBER_OF_UNITS + SEPARATOR_COMMA+
 COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+ 
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
 "VALUES(?,?,?,?,?,?,?,?,?,?)"
-         + " ON DUPLICATE KEY UPDATE "
-        + "noOfUnits=noOfUnits-?, "
+        // + " ON DUPLICATE KEY UPDATE "
+         +"ON CONFLICT(product_id) DO UPDATE SET "
+        + "no_of_units=no_of_units-?, "
         + "datetime=?";  
  
 statement = ResourceManager.getConnection().prepareStatement(sql);  
@@ -182,7 +128,7 @@ statement.setString(1, product.getProductId());
 statement.setString(2, product.getProductName());
 statement.setString(3, product.getProductType());
 statement.setString(4, product.getProductCategory());
-statement.setString(5, product.getProductDescription());
+statement.setString(5, product.getProductDetails());
 statement.setString(6, product.getSerialNumber());
 statement.setDouble(7, product.getUnitPrice());
 statement.setInt(8, 0);
@@ -197,11 +143,11 @@ statement.close();
 
 
 String addIntoInvoiceQuery = 
-"INSERT INTO INVOICE ("+
+"INSERT INTO invoice ("+
 COLUMN_INVOICE_NUMBER  + SEPARATOR_COMMA+ 
 COLUMN_CUSTOMER_ID  + SEPARATOR_COMMA+ 
 COLUMN_CUSTOMER_TYPE  + SEPARATOR_COMMA+ 
-COLUMN_CUSTOMER_DETAIL  + SEPARATOR_COMMA+ 
+COLUMN_CUSTOMER_DETAILS  + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_DETAILS  + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_COUNT  + SEPARATOR_COMMA+ 
 COLUMN_NUMBER_OF_UNITS  + SEPARATOR_COMMA+ 
@@ -225,7 +171,7 @@ statement.setString(1, invoiceNumber);
 statement.setString(2, customerId);
 statement.setString(3, customer.getCustomerType());
 statement.setString(4, customer.getCustomerDetail());
-statement.setString(5, product.getProductDescription());
+statement.setString(5, product.getProductDetails());
 statement.setInt(6, 1);//productCount
 statement.setInt(7, 1);//itemCount
 statement.setDouble(8, product.getTotalPrice());
@@ -250,7 +196,7 @@ return false;}
 public boolean addProductIntoInventory(List<ProductInfo> products) throws SQLException, ClassNotFoundException, Exception {
 PreparedStatement statement;
 String addInventoryQuery = 
-"INSERT INTO INVENTORY ("+
+"INSERT INTO inventory ("+
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
@@ -262,9 +208,9 @@ COLUMN_NUMBER_OF_UNITS + SEPARATOR_COMMA+
 COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+ 
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
 "VALUES(?,?,?,?,?,?,?,?,?,?)"
-     // + " ON DUPLICATE KEY UPDATE "
-+"ON CONFLICT(productId) DO UPDATE SET "
-        + "noOfUnits=noOfUnits+?, "
+ // + " ON DUPLICATE KEY UPDATE "
++"ON CONFLICT(product_id) DO UPDATE SET "
+        + "no_of_units=no_of_units+?, "
         + "datetime=?";  
 
 
@@ -275,7 +221,7 @@ statement.setString(1, product.getProductId());
 statement.setString(2, product.getProductName());
 statement.setString(3, product.getProductType());
 statement.setString(4, product.getProductCategory());
-statement.setString(5, product.getProductDescription());
+statement.setString(5, product.getProductDetails());
 statement.setString(6, product.getSerialNumber());
 statement.setDouble(7, product.getUnitPrice());
 statement.setInt(8, product.getNoOfUnits());
@@ -309,17 +255,11 @@ System.out.println("Row Inserted "+ product.getProductId());
 return false;}
 
 
-
-
-
-
-
-
 public boolean removeProductFromInventory(CustomerInfo customer, List<ProductInfo> products) throws SQLException, ClassNotFoundException, Exception {
 PreparedStatement saleStatement=null;
 PreparedStatement inventoryStatement=null;
 PreparedStatement invoiceStatement=null;
-PreparedStatement customerStatement=null;
+
 
 
 String invoiceNumber=Utils.getInvoiceNumber();
@@ -344,7 +284,7 @@ int items=0;
 for(ProductInfo product:products){
 
 String addIntoSaleQuery = 
-"INSERT INTO SALE ("+
+"INSERT INTO sale ("+
 COLUMN_INVOICE_NUMBER + SEPARATOR_COMMA+ 
 COLUMN_SALE_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
@@ -352,12 +292,13 @@ COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_CATEGORY + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_DETAILS +  SEPARATOR_COMMA+ 
+COLUMN_CUSTOMER_DETAILS +  SEPARATOR_COMMA+ 
 COLUMN_SERIAL_NUMBER +SEPARATOR_COMMA+         
 COLUMN_UNIT_PRICE + SEPARATOR_COMMA+ 
 COLUMN_NUMBER_OF_UNITS + SEPARATOR_COMMA+ 
 COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+ 
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
-"VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";  
+"VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";  
  
 saleId=Utils.getSALEID();
 saleStatement = ResourceManager.getConnection().prepareStatement(addIntoSaleQuery);  
@@ -367,18 +308,19 @@ saleStatement.setString(3, product.getProductId());
 saleStatement.setString(4, product.getProductName());
 saleStatement.setString(5, product.getProductType());
 saleStatement.setString(6, product.getProductCategory());
-saleStatement.setString(7, product.getProductDescription());
-saleStatement.setString(8, product.getSerialNumber());
-saleStatement.setDouble(9, product.getUnitPrice());
-saleStatement.setInt(10, product.getNoOfUnits());
-saleStatement.setDouble(11, product.getTotalPrice());
-saleStatement.setString(12, Utils.getCurrentDateTime());
+saleStatement.setString(7, product.getProductDetails());
+saleStatement.setString(8, "Customer Detaills");
+saleStatement.setString(9, product.getSerialNumber());
+saleStatement.setDouble(10, product.getUnitPrice());
+saleStatement.setInt(11, product.getNoOfUnits());
+saleStatement.setDouble(12, product.getTotalPrice());
+saleStatement.setString(13, Utils.getCurrentDateTime());
 saleStatement.addBatch();
 
 
 
 String updateInventoryQuery = 
-"INSERT INTO INVENTORY ("+
+"INSERT INTO inventory ("+
 COLUMN_PRODUCT_ID + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_NAME +SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_TYPE +  SEPARATOR_COMMA+ 
@@ -391,8 +333,8 @@ COLUMN_TOTAL_PRICE +  SEPARATOR_COMMA+
 COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
 "VALUES(?,?,?,?,?,?,?,?,?,?)"
         // + " ON DUPLICATE KEY UPDATE "
-         +"ON CONFLICT(productId) DO UPDATE SET "
-        + "noOfUnits=noOfUnits-?, "
+         +"ON CONFLICT(product_id) DO UPDATE SET "
+        + "no_Of_units=no_of_units-?, "
         + "datetime=?";  
  
 inventoryStatement = ResourceManager.getConnection().prepareStatement(updateInventoryQuery);  
@@ -400,7 +342,7 @@ inventoryStatement.setString(1, product.getProductId());
 inventoryStatement.setString(2, product.getProductName());
 inventoryStatement.setString(3, product.getProductType());
 inventoryStatement.setString(4, product.getProductCategory());
-inventoryStatement.setString(5, product.getProductDescription());
+inventoryStatement.setString(5, product.getProductDetails());
 inventoryStatement.setString(6, product.getSerialNumber());
 inventoryStatement.setDouble(7, product.getUnitPrice());
 inventoryStatement.setInt(8, 0);
@@ -415,6 +357,10 @@ try{
 
 saleAddes=saleStatement.executeBatch()[0]; 
 inventoryUpdated=inventoryStatement.executeBatch()[0]; 
+
+
+System.out.println("saleAddes Sold   from       inventory -"+saleAddes );
+System.out.println("inventoryUpdated count  updated in inventory - "+inventoryUpdated);
 System.out.println("Product Sold   from       inventory -"+saleId );
 System.out.println("Product count  updated in inventory - "+product.getSerialNumber());
 
@@ -423,7 +369,7 @@ System.out.println("Product count  updated in inventory - "+product.getSerialNum
 
 itemSoldList.add(new ItemInfo(
         saleId,
-        product.getProductDescription(),
+        product.getProductDetails(),
         product.getUnitPrice(),
         product.getNoOfUnits()));
 
@@ -439,10 +385,10 @@ productList.append(product.getItemInfo());
 
 
 String addIntoInvoiceQuery = 
-"INSERT INTO INVOICE ("+
+"INSERT INTO invoice ("+
 COLUMN_INVOICE_NUMBER  + SEPARATOR_COMMA+ 
 COLUMN_CUSTOMER_ID  + SEPARATOR_COMMA+ 
-COLUMN_CUSTOMER_DETAIL  + SEPARATOR_COMMA+ 
+COLUMN_CUSTOMER_DETAILS  + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_DETAILS  + SEPARATOR_COMMA+ 
 COLUMN_PRODUCT_COUNT  + SEPARATOR_COMMA+ 
 COLUMN_NUMBER_OF_UNITS  + SEPARATOR_COMMA+ 
@@ -485,7 +431,7 @@ invoiceStatement.close();
 
 
 
-return false;}
+return true;}
 
 
 

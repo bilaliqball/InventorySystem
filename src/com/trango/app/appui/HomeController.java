@@ -258,7 +258,7 @@ homeBorderpane.setCenter(root1);
     private void checkInvoice(ActionEvent event) throws IOException {
         Node root1 =null;prepareSlideMenuAnimation();
         System.out.println("Check Invoices");
-root1=FXMLLoader.load(getClass().getResource("CheckDealerInvoice.fxml"));
+root1=FXMLLoader.load(getClass().getResource("CheckAllInvoice.fxml"));
 homeBorderpane.setCenter(root1);
     }
 

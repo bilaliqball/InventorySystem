@@ -6,7 +6,7 @@
 package com.trango.app.appui;
 
 import com.trango.app.database.InventoryDao;
-import com.trango.app.model.ProductInfo;
+import com.trango.app.model.SaleInfo;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -33,25 +33,26 @@ import javafx.scene.text.Font;
 public class CheckSoldInventoryController implements Initializable {
 
     @FXML private Font x2;
-    @FXML private Button searchButton;
-    @FXML private TableView<ProductInfo> inventoryTable;
-    @FXML private TableColumn<ProductInfo, String> nameColumn;
-    @FXML private TableColumn<ProductInfo, String> typeColumn;
-    @FXML private TableColumn<ProductInfo, String> categoryColumn;
-    @FXML private TableColumn<ProductInfo, String> unitPriceColumn;
-    @FXML private TableColumn<ProductInfo, String> quantityColumn;
-    @FXML private TableColumn<ProductInfo, String> totalColumn;
-    @FXML private TextField productName;
-    @FXML private TextField productCategory;
+    @FXML private TableView<SaleInfo> inventoryTable;
+    @FXML private TableColumn<SaleInfo, String> prodcutDetailColumn;
+    @FXML private TableColumn<SaleInfo, String> customerDetailColumn;
+    @FXML private TableColumn<SaleInfo, String> categoryColumn;
+    @FXML private TableColumn<SaleInfo, String> unitPriceColumn;
+    @FXML private TableColumn<SaleInfo, String> quantityColumn;
+    @FXML private TableColumn<SaleInfo, String> totalColumn;
+
     @FXML private Button closeButton;
     @FXML private Label totalProducts;
     @FXML private Label totalAssets;
     @FXML private AnchorPane checkInventoryAnchorpane;
 
 
-    List<ProductInfo> completeSoldProductList;
-    List<ProductInfo> searchedSoldProductList;
-    public ObservableList<ProductInfo> itemdata;
+    List<SaleInfo> completeSoldProductList;
+    List<SaleInfo> searchedSoldProductList;
+    public ObservableList<SaleInfo> itemdata;
+  
+    @FXML private TextField productDetails;
+    @FXML private TextField customerDetails;
 
     /**
      * Initializes the controller class.
@@ -69,13 +70,13 @@ public class CheckSoldInventoryController implements Initializable {
     
     
     public void init() {
-    	productName.textProperty().addListener((observable, oldValue, newValue) -> {
+    	productDetails.textProperty().addListener((observable, oldValue, newValue) -> {
     	    if(newValue.length()>2) {
     	    	System.out.println(newValue);
     	    	try {
     	    		searchedSoldProductList=new InventoryDao().getSoldInventory(newValue);
 			        itemdata.clear();
-			        for(ProductInfo i:searchedSoldProductList){itemdata.add(i);}
+			        for(SaleInfo i:searchedSoldProductList){itemdata.add(i);}
 			        inventoryTable.setItems(itemdata);
 				} 
     	    	catch (Exception e) {e.printStackTrace();}
@@ -89,27 +90,34 @@ public class CheckSoldInventoryController implements Initializable {
     }
     
     
-public ObservableList<ProductInfo> getSoldInventorydata() throws ClassNotFoundException, SQLException, Exception{
+public ObservableList<SaleInfo> getSoldInventorydata() throws ClassNotFoundException, SQLException, Exception{
 System.out.println("Items count: "+completeSoldProductList.size());
-for(ProductInfo i:completeSoldProductList){itemdata.add(i);}
+
+long assets=0;
+int count=0;
+
+for(SaleInfo i:completeSoldProductList){
+    itemdata.add(i);
+    count+=i.getNoOfUnits();
+    assets+=i.getTotalPrice();
+}
+totalProducts.setText(count+ "");
+totalAssets.setText(assets+ "");
 return itemdata;} 
     
     
 public void tableColumns() {           
-nameColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productName"));
-typeColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productType"));
-categoryColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("productCategory"));
-unitPriceColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("unitPrice"));
-quantityColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("noOfUnits"));
-totalColumn.setCellValueFactory(new PropertyValueFactory<ProductInfo, String>("totalPrice"));		
+prodcutDetailColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("productDetails"));
+customerDetailColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("customerDetails"));
+categoryColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("datetime"));
+unitPriceColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("unitPrice"));
+quantityColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("noOfUnits"));
+totalColumn.setCellValueFactory(new PropertyValueFactory<SaleInfo, String>("totalPrice"));		
 	}
     
         
   
         
-    @FXML
-    private void searchAction(ActionEvent event) {
-    }
 
     @FXML
     private void close(ActionEvent event) {

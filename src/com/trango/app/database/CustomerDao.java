@@ -24,7 +24,31 @@ public class CustomerDao  {
     
 
 
+	public boolean addUserInfo(CustomerInfo customer) throws SQLException, ClassNotFoundException, Exception {
+		PreparedStatement statement=null;
+		boolean res=false;
+		String sql = 
+		"INSERT INTO user ("+
+		COLUMN_USER_NAME +SEPARATOR_COMMA+ 
+		COLUMN_GENDER + SEPARATOR_COMMA+ 
+		COLUMN_DESIGNATION +  SEPARATOR_COMMA+ 
+		COLUMN_DEPARTMENT +  SEPARATOR_COMMA+ 
+		COLUMN_AGE +  SEPARATOR_COMMA+ 
+		COLUMN_DATE_TIME+SEPARATOR_BRACKET_END+
+		"VALUES(?,?,?,?,?,?)";  
 
+		statement = ResourceManager.getConnection().prepareStatement(sql);  
+		statement.setString(1, customer.getCustomerName());
+		statement.setString(2, "Male");
+		statement.setString(3, "Software Eniginneer");
+		statement.setString(4, "IT");
+		statement.setInt(5, 28);
+		statement.setString(6, Utils.getCurrentDateTime());
+		statement.executeUpdate();
+		System.out.println("User added");
+		statement.close();
+		res=true;
+		return res;}
 
 
 public boolean addCustomerInfo(CustomerInfo customer) throws SQLException, ClassNotFoundException, Exception {

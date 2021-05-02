@@ -18,11 +18,17 @@ public class ResourceManager  {
 	
      
 
-
+	public  void createUserTable() throws Exception {  
+		try{  
+		System.out.println(DBLiterals.CREATE_TABLE_USER_QUERY);
+		Statement stmt = getConnection().createStatement();  
+		stmt.execute(CREATE_TABLE_USER_QUERY);  
+		System.out.println("user Table CREATED");} 
+		catch (SQLException e) {  System.out.println(e.getMessage());  }} 
 
 public  void createInventoryTable() throws Exception {  
 try{  
-    System.out.println(DBLiterals.CREATE_TABLE_INVENTORY_QUERY);
+System.out.println(DBLiterals.CREATE_TABLE_INVENTORY_QUERY);
 Statement stmt = getConnection().createStatement();  
 stmt.execute(CREATE_TABLE_INVENTORY_QUERY);  
 System.out.println("INVENTORY Table CREATED");} 
@@ -141,23 +147,22 @@ public static void main(String args[]) throws ClassNotFoundException, Exception 
 //new ResourceManager().initDatabaseResources();
 
 
-//new ResourceManager().createInvoiceTable();
+
 //new ResourceManager().showAllTables();
 
 //new ResourceManager().clearDatabaseResources();
 //new ResourceManager().dropDatabaseResources();
 
-//try{new ResourceManager().dropSaleTable();}catch(Exception e){e.printStackTrace();System.out.println("Error dropping Sale Table");}
-//try{new ResourceManager().createSaleTable();}catch(Exception e){System.out.println("Error creating Sale Table");}
+try{new ResourceManager().dropSaleTable();}catch(Exception e){e.printStackTrace();System.out.println("Error dropping Sale Table");}
+try{new ResourceManager().createSaleTable();}catch(Exception e){System.out.println("Error creating Sale Table");}
 
-	try{new ResourceManager().dropInvoiceTable();}catch(Exception e){e.printStackTrace();System.out.println("Error dropping Invoice Table");}
-	try{new ResourceManager().createInvoiceTable();}catch(Exception e){System.out.println("Error creating Invoice Table");}
 	
 }
 
 public void initDatabaseResources(){
 System.out.println("Creating local DB");
 //try{createNewDatabase();} catch(Exception e){System.out.println("Error creatring  Table");}
+try{createUserTable();}catch(Exception e){System.out.println("Error creating Inventory Table");}
 try{createInventoryTable();}catch(Exception e){System.out.println("Error creating Inventory Table");}
 try{createInvoiceTable();}catch(Exception e){System.out.println("Error creating Invoice Table");}
 try{createCustomerTable();}catch(Exception e){System.out.println("Error creating Customer Table");}
@@ -216,10 +221,14 @@ public  void createNewDatabase() throws ClassNotFoundException {
     }
 }
 
-public static String DBPATH="/resources/others/database.db";
+
 public static Connection connection=null;
 public static String dbUrl="";
 public static String driverName="org.sqlite.JDBC";
+
+public static String DBPATH="/resources/others/database.db";
+//String url = "jdbc:mysql://localhost:3306/new_schema";
+//String username = "root";
 
 public static Connection getConnection() throws ClassNotFoundException, Exception {  
 

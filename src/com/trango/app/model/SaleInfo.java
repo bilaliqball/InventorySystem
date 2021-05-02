@@ -1,9 +1,6 @@
 package com.trango.app.model;
 
 import com.trango.app.util.Utils;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
 
 
 
@@ -33,10 +30,26 @@ public class SaleInfo {
 
     public SaleInfo() {}
 
+    
+
+    
+         public SaleInfo(String id, String productdetails, String customerdetails, String category, String datetime, double discount, double price, int quantity, double total) throws Exception {
+        this.productId=id;
+        this.customerDetails=customerdetails;
+        this.productDetails=productdetails;
+        this.serialNumber=id;
+        this.unitPrice=price;
+        this.noOfUnits=quantity;
+        this.discount=discount;
+        this.totalPrice= total;
+        this.datetime=datetime;
+        this.datetime=Utils.getReadableDate(datetime);
+    }
+    
 public SaleInfo(String invoice, String datetime,String customerdetails, String productdetails, int productcount, int units, double subtotal,double totaldiscount, double gross, double totaldeposit, double remainingbalance) throws Exception {
 this.invoiceNumber=invoice;
 this.customerDetails=customerdetails;
-this.productDetails="Here";
+this.productDetails=productdetails;
 this.productCount=productcount;
 this.noOfUnits=units;
 this.totalPrice=subtotal;
@@ -45,6 +58,7 @@ this.grossTotal=gross;
 this.deposit=totaldeposit;
 this.balance=remainingbalance;
 this.datetime=datetime;
+this.datetime=Utils.getReadableDate(datetime);
     }
 
     
@@ -56,6 +70,7 @@ this.noOfUnits=units;
 this.unitPrice=unitprice;
 this.totalPrice=subtotal;
 this.datetime=datetime;
+this.datetime=Utils.getReadableDate(datetime);
     }
     
 
@@ -67,13 +82,13 @@ this.datetime=datetime;
         public String getDatetime(){return this.datetime;}
 	
         public String getCustomerDetails(){return this.customerDetails;}
-	public String getProductDetails(){return this.productDetails;}
+        public String getProductDetails(){return this.productDetails;}
         public String getCustomerType(){return this.customerType;}
 	
         public int getProductCount(){return this.productCount;}
         public double getUnitPrice(){return this.unitPrice;}
-	public int getNoOfUnits(){return this.noOfUnits;}
-	public double getTotalPrice(){return this.totalPrice;}
+        public int getNoOfUnits(){return this.noOfUnits;}
+        public double getTotalPrice(){return this.totalPrice;}
         
         public double getDiscount(){return this.discount;}
         public double getGrossTotal(){return this.grossTotal;}
@@ -88,32 +103,26 @@ this.datetime=datetime;
         public void setDatetime(String datetime){ this.datetime=datetime;}
 	
         public void setCustomerDetails(String customerdetails){ this.customerDetails=customerdetails;}
-	public void setProductDetails(String productdetails){ this.productDetails=productdetails;}
+        public void setProductDetails(String productdetails){ this.productDetails=productdetails;}
         public void setCustomerType(String customertype){ this.customerType=customertype;}
 	
         public void setProductCount(int productcount){ this.productCount=productcount;}
         public void setUnitPrice(int unitprice){ this.unitPrice=unitprice;}
-	public void setNoOfUnits(int units){ this.noOfUnits=units;}
-	public void setTotalPrice(double subtotal){ this.totalPrice=subtotal;}
+        public void setNoOfUnits(int units){ this.noOfUnits=units;}
+        public void setTotalPrice(double subtotal){ this.totalPrice=subtotal;}
         
         public void setDiscount(double discount){ this.discount=discount;}
         public void setGrossTotal(double gross){ this.grossTotal=gross;}
         public void setDeposit(double cash){ this.deposit=cash;} 
         public void setBalance(double balance){ this.balance=balance;}
         
-      
-	
 
-   
-
-        
-    
-        
 	@Override
 	public String toString() {
         String tab="\t";
         return this.invoiceNumber+tab+
         this.productDetails+tab+
+
         this.customerDetails+tab+
         this.unitPrice+tab+
         this.noOfUnits+tab+

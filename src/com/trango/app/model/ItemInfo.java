@@ -9,7 +9,7 @@ public class ItemInfo {
     private String saleId;
 	private String productDescription;
 	private String serialNumber;
-        private double unitPrice;
+    private double unitPrice;
 	private int noOfUnits;
 
 
@@ -20,10 +20,10 @@ public class ItemInfo {
     public ItemInfo() {}
 
     public ItemInfo(String saleid,String productDetails, double price, int quantity) throws Exception {
-	this.saleId=saleid;
+    	this.saleId=saleid;
         this.productDescription=productDetails;
         this.unitPrice=price;
-	this.noOfUnits=quantity;
+        this.noOfUnits=quantity;
 
     }
 
@@ -37,10 +37,10 @@ public class ItemInfo {
 	public String toString() {
         String tab="\t";
         return
-	this.productDescription+tab+
-	this.serialNumber+tab+
+        this.productDescription+tab+
+        this.serialNumber+tab+
         this.unitPrice+tab+
-	this.noOfUnits+tab;
+        this.noOfUnits+tab;
 	
 	}
 	
